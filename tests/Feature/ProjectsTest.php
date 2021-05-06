@@ -41,7 +41,7 @@ class ProjectsTest extends TestCase
                 $this->assertEquals(
                     [
                         'id', 'title', 'description', 'status', 'priority',
-                        'creator', 'due_date', 'completed_date', 'deleted_at',
+                        'creator', 'due_date', 'completed_date', 'deleted_at'
                     ],
                     array_keys($projects[0])
                 );
@@ -55,6 +55,8 @@ class ProjectsTest extends TestCase
         )->first()->update([
             'title' => 'Greg Andersson',
         ]);
+
+
 
         $this->actingAs($this->user)
             ->get('/projects?search=Greg')
@@ -97,7 +99,7 @@ class ProjectsTest extends TestCase
             factory(Project::class, 5)->make()
         )->first();
 
-        //$client = $client->fresh();
+        $project = $project->fresh();
 
         $this->actingAs($this->user)
             ->get('/projects/' . $project->id . "/edit")
