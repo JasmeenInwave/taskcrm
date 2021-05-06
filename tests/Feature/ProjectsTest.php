@@ -41,7 +41,7 @@ class ProjectsTest extends TestCase
                 $this->assertEquals(
                     [
                         'id', 'title', 'description', 'status', 'priority',
-                        'creator', 'due_date', 'completed_date',
+                        'creator', 'due_date', 'completed_date', 'deleted_at',
                     ],
                     array_keys($projects[0])
                 );
@@ -53,7 +53,7 @@ class ProjectsTest extends TestCase
         $this->user->account->projects()->saveMany(
             factory(Project::class, 5)->make()
         )->first()->update([
-            'name' => 'Greg Andersson',
+            'title' => 'Greg Andersson',
         ]);
 
         $this->actingAs($this->user)
@@ -62,7 +62,7 @@ class ProjectsTest extends TestCase
             ->assertPropValue('filters.search', 'Greg')
             ->assertPropCount('projects.data', 1)
             ->assertPropValue('projects.data', function ($projects) {
-                $this->assertEquals('Greg Andersson', $projects[0]['name']);
+                $this->assertEquals('Greg Andersson', $projects[0]['title']);
             });
     }
 
@@ -102,12 +102,13 @@ class ProjectsTest extends TestCase
         $this->actingAs($this->user)
             ->get('/projects/' . $project->id . "/edit")
             ->assertStatus(200)
-            ->assertPropValue('project.name', $project->title)
+            ->assertPropValue('project.title', $project->title)
             ->assertPropValue('project.description', $project->description)
             ->assertPropValue('project.status', $project->status)
             ->assertPropValue('project.priority', $project->priority)
             ->assertPropValue('project.creator', $project->creator)
             ->assertPropValue('project.due_date', $project->due_date)
-            ->assertPropValue('project.completed_date', $project->completed_date);
+            ->assertPropValue('project.completed_date', $project->completed_date)
+            ->assertPropValue('project.deleted_at', $project->deleted_at);
     }
 }
