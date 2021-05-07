@@ -10,6 +10,8 @@
           <option value="only">Only Trashed</option>
         </select>
       </search-filter>
+      <inertia-link class="btn-indigo" href="/experiences">Experiences</inertia-link>
+      
       <inertia-link class="btn-indigo" :href="route('educations.create')">
         <span>Create</span>
         <span class="hidden md:inline">Education</span>
